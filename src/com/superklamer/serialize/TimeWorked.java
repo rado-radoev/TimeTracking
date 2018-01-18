@@ -14,6 +14,8 @@ public class TimeWorked implements Serializable {
 	private double hoursWorked;
 	
 	private static final DateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+	
+	public TimeWorked() { }
 
 	
 	public TimeWorked(Date date, double hoursWorked) {
@@ -22,8 +24,8 @@ public class TimeWorked implements Serializable {
 	}
 
 
-	public Date getDate() {
-		return date;
+	public String getDate() {
+		return sdf.format(date);
 	}
 
 
