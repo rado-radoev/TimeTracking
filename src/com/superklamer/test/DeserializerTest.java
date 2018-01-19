@@ -1,4 +1,4 @@
-package com.superklamer.serialize;
+package com.superklamer.test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;

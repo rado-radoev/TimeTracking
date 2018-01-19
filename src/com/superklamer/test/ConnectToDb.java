@@ -1,4 +1,4 @@
-package com.superklamer.database;
+package com.superklamer.test;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;

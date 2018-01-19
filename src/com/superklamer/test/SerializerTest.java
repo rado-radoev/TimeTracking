@@ -1,4 +1,4 @@
-package com.superklamer.serialize;
+package com.superklamer.test;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-
 import java.sql.PreparedStatement;
 
 import java.sql.Connection;

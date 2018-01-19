@@ -1,4 +1,4 @@
-package com.superklamer.serialize;
+package com.superklamer.test;
 
 import java.util.Date;
 import java.io.Serializable;
