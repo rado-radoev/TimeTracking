@@ -43,7 +43,8 @@ public class DeserializerTest {
 			
 			statement = conn.createStatement();
 			String sql = "SELECT Time FROM Tickets.Time WHERE TicketNumber='23455'";
-			TimeWorked tw = new TimeWorked();
+			//TimeWorked tw = new TimeWorked();
+			resultSet = statement.executeQuery(sql);
 			
 			if (resultSet.next()) {
 				input = resultSet.getBinaryStream("Time");
