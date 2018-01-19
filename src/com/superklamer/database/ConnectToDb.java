@@ -23,13 +23,13 @@ public class ConnectToDb {
 			
 			// process resultSet
 			while (myRes.next()) {
-				System.out.println(myRes.getString("TicketName") + " " + myRes.getString("TicketNumber"));
+				//System.out.println(myRes.getString("TicketName") + " " + myRes.getString("TicketNumber"));
 			}
 			
 			
-			ResultSet myTimeRes = myStatement.executeQuery("SELECT * FROM Tickets.Time");
+			ResultSet myTimeRes = myStatement.executeQuery("SELECT * FROM Tickets.DateAndTime");
 			while (myTimeRes.next()) {
-				System.out.println(myTimeRes.getString("Date") + " " + myTimeRes.getString("HoursWorked") + " " + myTimeRes.getString("TicketNumber"));
+				System.out.println(myTimeRes.getString("Date") + " " + myTimeRes.getString("Hours"));
 			}
 			
 		} catch (Exception e) {

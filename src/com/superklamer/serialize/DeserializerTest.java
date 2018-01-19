@@ -10,6 +10,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class DeserializerTest {
@@ -57,9 +59,10 @@ public class DeserializerTest {
 				}
 			}
 			
-			TimeWorked timeWorked = (TimeWorked)Serializer.deserialize(buffer.toByteArray());
+			TimeWorked timeWorked = (TimeWorked) Serializer.deserialize(buffer.toByteArray());
 			
-			System.out.println("Date: " + timeWorked.getDate() + " " + "Hours: " +timeWorked.getHoursWorked());
+			System.out.println("Date: " + timeWorked.getDate() + " " + "Hours: " + timeWorked.getHoursWorked());	
+			
 			
 			
 		} catch (SQLException e) {

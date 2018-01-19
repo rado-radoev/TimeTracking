@@ -1,8 +1,13 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf200
-{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\margl1440\margr1440\vieww12840\viewh16440\viewkind1
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 ArialMT;\f2\fnil\fcharset0 Menlo-Regular;
+}
+{\colortbl;\red255\green255\blue255;\red27\green29\blue31;\red255\green255\blue255;\red235\green236\blue237;
+\red37\green127\blue159;\red36\green38\blue41;\red13\green0\blue129;\red104\green26\blue29;\red43\green39\blue19;
+}
+{\*\expandedcolortbl;;\cssrgb\c14118\c15294\c16078;\cssrgb\c100000\c100000\c100000;\cssrgb\c93725\c94118\c94510;
+\cssrgb\c16863\c56863\c68627;\cssrgb\c18824\c20000\c21176;\cssrgb\c6275\c6275\c58039;\cssrgb\c49020\c15294\c15294;\cssrgb\c22353\c20000\c9412;
+}
+\margl1440\margr1440\vieww13140\viewh16740\viewkind1
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
 \f0\fs24 \cf0 SELECT Info.TicketName, Info.TicketNumber, Info.TicketComment, Time.Date, Time.HoursWorked\
@@ -15,6 +20,42 @@ Info.TicketNumber=Time.TicketNumber\
 \
 Object serialization:\
 {\field{\*\fldinst{HYPERLINK "https://stackoverflow.com/questions/5837698/converting-any-object-to-a-byte-array-in-java"}}{\fldrslt https://stackoverflow.com/questions/5837698/converting-any-object-to-a-byte-array-in-java}}\
+{\field{\*\fldinst{HYPERLINK "https://www.tutorialspoint.com/java/java_serialization.htm"}}{\fldrslt https://www.tutorialspoint.com/java/java_serialization.htm}}\
 \
 Java dates:\
-{\field{\*\fldinst{HYPERLINK "https://www.mkyong.com/java/java-how-to-get-current-date-time-date-and-calender/"}}{\fldrslt https://www.mkyong.com/java/java-how-to-get-current-date-time-date-and-calender/}}}
+{\field{\*\fldinst{HYPERLINK "https://www.mkyong.com/java/java-how-to-get-current-date-time-date-and-calender/"}}{\fldrslt https://www.mkyong.com/java/java-how-to-get-current-date-time-date-and-calender/}}\
+\
+DB query statements: \
+{\field{\*\fldinst{HYPERLINK "https://stackoverflow.com/questions/1905607/cannot-issue-data-manipulation-statements-with-executequery"}}{\fldrslt https://stackoverflow.com/questions/1905607/cannot-issue-data-manipulation-statements-with-executequery}}\
+\
+\
+\
+{\field{\*\fldinst{HYPERLINK "https://stackoverflow.com/questions/1264709/convert-inputstream-to-byte-array-in-java"}}{\fldrslt https://stackoverflow.com/questions/1264709/convert-inputstream-to-byte-array-in-java}}\
+InputStream to byteArray \
+\pard\pardeftab720\sl340\sa300\partightenfactor0
+
+\f1\fs30 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 You need to read each byte from your\'a0
+\f2\fs26 \cb4 InputStream
+\f1\fs30 \cb3 \'a0and write it to a\'a0
+\f2\fs26 \cb4 ByteArrayOutputStream
+\f1\fs30 \cb3 . You can then retrieve the underlying byte array by calling\'a0
+\f2\fs26 \cb4 toByteArray()
+\f1\fs30 \cb3 ; e.g.\
+\pard\pardeftab720\sl300\partightenfactor0
+
+\f2\fs26 \cf5 \cb4 \strokec5 InputStream\cf6 \strokec6  is = ...\
+\cf5 \strokec5 ByteArrayOutputStream\cf6 \strokec6  buffer = \cf7 \strokec7 new\cf6 \strokec6  \cf5 \strokec5 ByteArrayOutputStream\cf6 \strokec6 ();\
+\
+\pard\pardeftab720\sl300\partightenfactor0
+\cf7 \strokec7 int\cf6 \strokec6  nRead;\
+\cf7 \strokec7 byte\cf6 \strokec6 [] data = \cf7 \strokec7 new\cf6 \strokec6  \cf7 \strokec7 byte\cf6 \strokec6 [\cf8 \strokec8 16384\cf6 \strokec6 ];\
+\
+\cf7 \strokec7 while\cf6 \strokec6  ((nRead = is.read(data, \cf8 \strokec8 0\cf6 \strokec6 , data.length)) != -\cf8 \strokec8 1\cf6 \strokec6 ) \{\
+  buffer.write(data, \cf8 \strokec8 0\cf6 \strokec6 , nRead);\
+\}\
+\
+buffer.flush();\
+\
+\cf7 \strokec7 return\cf6 \strokec6  buffer.toByteArray();\cf9 \strokec9 \
+}

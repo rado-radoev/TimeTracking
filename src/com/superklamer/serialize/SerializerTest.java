@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import java.sql.PreparedStatement;
@@ -22,10 +24,13 @@ public class SerializerTest {
 		TimeWorked tw2 = new TimeWorked(new Date(), 5);
 		TimeWorked tw3 = new TimeWorked(new Date(), 0.5);
 		
+		List<TimeWorked> times = new ArrayList<TimeWorked>();
+		times.add(tw1);
+		times.add(tw2);
+		times.add(tw3);
+		
 		try {
-			Serializer.serialize(tw1);
-			Serializer.serialize(tw2);
-			Serializer.serialize(tw3);
+			Serializer.serialize(times);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,10 +59,10 @@ public class SerializerTest {
 			
 
 			PreparedStatement preparedStatement = null;
-			String sql = "UPDATE Tickets.Time SET Time=? WHERE TicketNumber=23455";
+			String sql = "UPDATE Tickets.Time SET Time=? WHERE TicketNumber=112233";
 			preparedStatement = conn.prepareStatement(sql);
 
-			InputStream input = new ByteArrayInputStream(Serializer.serialize(tw1));
+			InputStream input = new ByteArrayInputStream(Serializer.serialize(times));
 			preparedStatement.setBinaryStream(1, input);
 
 			preparedStatement.executeUpdate();
