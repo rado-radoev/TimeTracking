@@ -6,28 +6,33 @@ import java.sql.Connection;
 
 public class ConnectToDB implements AutoCloseable {
 
+	private static ConnectToDB instance = null;
 	private Connection connection;
 	private String userName;
 	private String password;
 	private String dbURL;
 	
-	public ConnectToDB() {
-		this(null, null, null);
+	private ConnectToDB() {
+		// Empty constructor prevents instantiation 
 	}
 	
-	public ConnectToDB(String userName, String password, String dbURL) {
-		this.userName = userName;
-		this.password = password;
-		this.dbURL = dbURL;
+	public static ConnectToDB getInstance() {
+		if (instance == null) {
+			instance = new ConnectToDB();
+		}
 		
-		setConnection();
+		return instance;
 	}
 	
 	public Connection getConnection() {
 		return connection;
 	}
 
-	public void setConnection() {
+	public void setConnection(String dbURL, String userName, String password) {
+		this.dbURL = dbURL;
+		this.userName = userName;
+		this.password = password;
+		
 		try {
 			this.connection = DriverManager.getConnection(getDbURL(), getUserName(), getPassword());
 		} catch (SQLException e) {
