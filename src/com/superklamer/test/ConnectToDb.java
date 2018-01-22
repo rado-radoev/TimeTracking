@@ -10,7 +10,7 @@ public class ConnectToDb {
 	public static void main(String[] args) {
 		
 		try {
-			// et Connection to db
+			// get Connection to db
 			Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Tickets?autoReconnect=true&useSSL=false",
 					"root", "rado");
 			
