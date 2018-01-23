@@ -54,7 +54,7 @@ public class DBQueries {
 					dbConnection.getConnection().prepareStatement(ticketWorkTime);
 			
 			// *** inserts ***
-			String insertNewTicket = "INSERT INTO Tickets.TicketDate" + 
+			String insertNewTicket = "INSERT INTO Tickets.TicketData" + 
 									"(TicketNumber, TicketName, TicketComment)" + 
 									"VALUES (?, ?, ?)";
 			
