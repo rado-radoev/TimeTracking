@@ -79,15 +79,16 @@ public class DBQueries {
 	}
 	
 	// query specific ticket work time
-	public List<WorkTime> getTicketWorkTime() {
+	public List<WorkTime> getTicketWorkTime(int ticketNumber) {
 		List< WorkTime > result = null;
 		ResultSet resultSet = null;
 		
 		try {
+			queryTicketWorkTime.setInt(1, ticketNumber);
 			resultSet = queryTicketWorkTime.executeQuery();
 			result = new ArrayList< WorkTime >();
 			
-			if (resultSet != null) {
+			while (resultSet.next()) {
 				result.add(new WorkTime(
 						resultSet.getInt("TicketNumber"),
 						resultSet.getDate("Date"), 
@@ -125,13 +126,14 @@ public class DBQueries {
 	}
 	
 	// query info for specific ticket when ticket name provided
-	public Ticket getTicketInfoWithTicketName() {
+	public Ticket getTicketInfoWithTicketName(String ticketName) {
 		ResultSet resultSet = null;
 		
 		try {
+			queryTicketInfoWithTicketName.setString(1, ticketName);
 			resultSet = queryTicketInfoWithTicketName.executeQuery();
 			
-			if (resultSet != null) {
+			if (resultSet.next()) {
 				return new Ticket(
 						resultSet.getInt("TicketNumber"),
 						resultSet.getString("TicketName"),
@@ -145,13 +147,14 @@ public class DBQueries {
 	}
 	
 	// query info for specific ticket when ticket number provided
-	public Ticket getTicketInfoWithTicketNumber() {
+	public Ticket getTicketInfoWithTicketNumber(int ticketNumber) {
 		ResultSet resultSet = null;
 		
 		try {
+			queryTicketInfoWithTicketNumber.setInt(1, ticketNumber);
 			resultSet = queryTicketInfoWithTicketNumber.executeQuery();
 			
-			if (resultSet != null) {
+			if (resultSet.next()) {
 				return new Ticket(resultSet.getInt("TicketNumber"),
 									resultSet.getString("TicketName"),
 									resultSet.getString("TicketComment"));
