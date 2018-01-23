@@ -15,6 +15,7 @@ public class DBQueries {
 	
 	private PreparedStatement queryTicketInfoWithTicketNumber;
 	private PreparedStatement queryTicketInfoWithTicketName;
+	private PreparedStatement queryFullTicketInfoWithTicketNumber;
 	private PreparedStatement queryAllTicketsInfo;
 	private PreparedStatement queryTicketWorkTime;
 	private PreparedStatement queryAllTicketsWorkTime;
@@ -30,8 +31,10 @@ public class DBQueries {
 			String allTicketsInfo = "SELECT * FROM Tickets.TicketData";
 			String ticketInfoWithTicketName = "SELECT * FROM Tickets.TicketData WHERE TicketName = ?";
 			String ticketInfoWithTicketNumber = "SELECT * FROM Tickets.TicketData WHERE TicketNumber = ?";
+			String fullTicketInfoWithTicketNumber = "SELECT TicketData.TicketNumber, TicketData.TicketName, TicketData.TicketComment, TicketHours.Date, TicketHours.Hours FROM Tickets.TicketData INNER join TicketHours on TicketData.TicketNumber = TicketHours.TicketNumber";
 			String allTicketsWorkTime = "SELECT * FROM Tickets.TicketHours";
 			String ticketWorkTime = "SELECT * FROM Tickets.TicketHours WHERE TicketNumber = ?"; 
+			
 			
 			
 			// create a query that will return information for all tickets;
@@ -55,6 +58,10 @@ public class DBQueries {
 			queryTicketWorkTime = 
 					dbConnection.getConnection().prepareStatement(ticketWorkTime);
 			
+			// crate a querty that will return full ticket info when ticket number is provided
+			queryFullTicketInfoWithTicketNumber = 
+					dbConnection.getConnection().prepareStatement(fullTicketInfoWithTicketNumber);
+			
 			
 			// *** inserts ***
 			String insertNewTicket = "INSERT INTO Tickets.TicketData" + 
@@ -75,6 +82,28 @@ public class DBQueries {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	// querty that will return full ticket info
+	public List< Ticket > getFullTicketInfo(int ticketNumber) {
+		// TO DO: MODIFY THE QUERY TO INCLUDE VARIABLE
+		
+		List < Ticket > result = null;
+		ResultSet resultSet = null;
+		
+		try {
+			resultSet = queryFullTicketInfoWithTicketNumber.executeQuery();
+			result = new ArrayList<Ticket>();
+			
+			while (resultSet.next()) {
+				// TO DO : GENERATE NEW TICKET THAT WILL HODL THE TICKET INFO
+				// AND THE WORK TIME INFO
+			
+			}
+			
+		} catch (SQLException sqe) {
+			sqe.printStackTrace();
 		}
 	}
 	
