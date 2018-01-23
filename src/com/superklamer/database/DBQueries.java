@@ -4,20 +4,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-import java.sql.Connection;
+import java.util.Date;
 
 import com.superklamer.ticket.model.Ticket;
+import com.superklamer.worktime.model.WorkTime;
 
 public class DBQueries {
 	
-	private Connection connection;
 	private PreparedStatement queryTicketInfoWithTicketNumber;
 	private PreparedStatement queryTicketInfoWithTicketName;
 	private PreparedStatement queryAllTicketsInfo;
 	private PreparedStatement queryTicketWorkTime;
 	private PreparedStatement queryAllTicketsWorkTime;
 	private PreparedStatement createNewTicket;
+	private PreparedStatement createNewWorkTime;
 	ConnectToDB dbConnection;
 	
 	public DBQueries() {
@@ -53,19 +55,112 @@ public class DBQueries {
 			queryTicketWorkTime = 
 					dbConnection.getConnection().prepareStatement(ticketWorkTime);
 			
+			
 			// *** inserts ***
 			String insertNewTicket = "INSERT INTO Tickets.TicketData" + 
 									"(TicketNumber, TicketName, TicketComment)" + 
 									"VALUES (?, ?, ?)";
 			
+			String insertNewWorkTime = "INSERT INTO Tickets.TicketHours" + 
+									  "(TicketNumber, Date, Hours)" + 
+									  "VALUES (?, ?, ?)";
+			
 			// create a new ticket 
 			createNewTicket = 
 					dbConnection.getConnection().prepareStatement(insertNewTicket);
 			
+			// create new workTime
+			createNewWorkTime = 
+					dbConnection.getConnection().prepareStatement(insertNewWorkTime);
+			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	// query specific ticket work time
+	public List<WorkTime> getTicketWorkTime() {
+		List< WorkTime > result = null;
+		ResultSet resultSet = null;
+		
+		try {
+			resultSet = queryTicketWorkTime.executeQuery();
+			result = new ArrayList< WorkTime >();
+			
+			if (resultSet != null) {
+				result.add(new WorkTime(
+						resultSet.getInt("TicketNumber"),
+						resultSet.getDate("Date"), 
+						resultSet.getDouble("Hours")));
+			}
+			
+		} catch (SQLException sqe) {
+			sqe.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	// query all ticket and return time worked
+	public List< WorkTime > getAllTicketsTimeWorked() {
+		List< WorkTime > result = null;
+		ResultSet resultSet = null;
+		
+		try {
+			resultSet = queryAllTicketsWorkTime.executeQuery();
+			result = new ArrayList<WorkTime>();
+			
+			while (resultSet.next()) {
+				result.add(new WorkTime(
+						resultSet.getInt("TicketNumber"), 
+						resultSet.getDate("Date"), 
+						resultSet.getDouble("Hours")));
+			}
+			
+		} catch (SQLException sqe) {
+			sqe.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	// query info for specific ticket when ticket name provided
+	public Ticket getTicketInfoWithTicketName() {
+		ResultSet resultSet = null;
+		
+		try {
+			resultSet = queryTicketInfoWithTicketName.executeQuery();
+			
+			if (resultSet != null) {
+				return new Ticket(
+						resultSet.getInt("TicketNumber"),
+						resultSet.getString("TicketName"),
+						resultSet.getString("TicketComment"));
+			}
+		} catch (SQLException sqe) {
+			sqe.printStackTrace();
+		}
+		
+		return new Ticket();
+	}
+	
+	// query info for specific ticket when ticket number provided
+	public Ticket getTicketInfoWithTicketNumber() {
+		ResultSet resultSet = null;
+		
+		try {
+			resultSet = queryTicketInfoWithTicketNumber.executeQuery();
+			
+			if (resultSet != null) {
+				return new Ticket(resultSet.getInt("TicketNumber"),
+									resultSet.getString("TicketName"),
+									resultSet.getString("TicketComment"));
+			}		
+		} catch (SQLException sqe) {
+			sqe.printStackTrace();
+		}
+		
+		return new Ticket();	
 	}
 	
 	// query all tickets in the db
@@ -116,5 +211,30 @@ public class DBQueries {
 		}
 		
 		return result;
+	}
+
+	// create new work time in the db
+	public int addTime(int ticketNumber, Date date, Double hours) {
+		int result = 0;
+		
+		// set params and execute insert
+		try {
+			Calendar c = Calendar.getInstance();
+			createNewWorkTime.setInt(1, ticketNumber);
+			createNewWorkTime.setDate(2, convertUtilToSql(date));
+			createNewWorkTime.setDouble(3, hours);
+			
+			// insert the new row and return the # of rows updated
+			result = createNewWorkTime.executeUpdate();
+		} catch (SQLException sqe) {
+			sqe.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	private java.sql.Date convertUtilToSql (java.util.Date uDate) {
+		java.sql.Date sDate = new java.sql.Date(uDate.getTime());
+		return sDate;
 	}
 }
