@@ -11,6 +11,43 @@ public class Ticket {
 	private String ticketComment;
 	private WorkTime workTime;
 
+	
+	public static class Builder {
+		// required parameters
+		private final int ticketNumber;
+		private final String ticketName;
+		
+		// opitonal parameters - initalized to default values
+		private String ticketComment = null;
+		private WorkTime workTime = new WorkTime();
+		
+		public Builder(int ticketNumber, String ticketName) {
+			this.ticketNumber = ticketNumber;
+			this.ticketName = ticketName;
+		}
+		
+		public Builder ticketComment(String ticketComment) {
+			this.ticketComment = ticketComment;
+			return this;
+		}
+		
+		public Builder workTime(WorkTime workTime) {
+			this.workTime = workTime;
+			return this;
+		}
+		
+		public Ticket build() {
+			return new Ticket();
+		}
+	}
+	
+	private Ticket(Builder builder) {
+		ticketNumber = builder.ticketNumber;
+		ticketName = builder.ticketName;
+		ticketComment = builder.ticketComment;
+		workTime = builder.workTime;
+	}
+	
 	public Ticket () {
 		this(0000000001, null, null);
 	}

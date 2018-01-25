@@ -23,6 +23,8 @@ public class DBQueries {
 	private PreparedStatement createNewWorkTime;
 	ConnectToDB dbConnection;
 	
+	
+	// TO DO: THIS MAY BE BETTER AS A STATIC CLASS
 	public DBQueries() {
 		try {
 			dbConnection = ConnectToDB.getInstance();
@@ -31,7 +33,14 @@ public class DBQueries {
 			String allTicketsInfo = "SELECT * FROM Tickets.TicketData";
 			String ticketInfoWithTicketName = "SELECT * FROM Tickets.TicketData WHERE TicketName = ?";
 			String ticketInfoWithTicketNumber = "SELECT * FROM Tickets.TicketData WHERE TicketNumber = ?";
-			String fullTicketInfoWithTicketNumber = "SELECT TicketData.TicketNumber, TicketData.TicketName, TicketData.TicketComment, TicketHours.Date, TicketHours.Hours FROM Tickets.TicketData INNER join TicketHours on TicketData.TicketNumber = TicketHours.TicketNumber";
+			String fullTicketInfoWithTicketNumber = "SELECT TicketData.TicketNumber, TicketData.TicketName, TicketData.TicketComment, TicketHours.Date, TicketHours.Hours " +
+					"FROM Tickets.TicketData " + 
+					"INNER JOIN "+ 
+					"TicketHours " + 
+					"ON " + 
+					"TicketData.TicketNumber = TicketHours.TicketNumber " +
+					"WHERE " + 
+					"TicketData.TicketNumber = ?";
 			String allTicketsWorkTime = "SELECT * FROM Tickets.TicketHours";
 			String ticketWorkTime = "SELECT * FROM Tickets.TicketHours WHERE TicketNumber = ?"; 
 			
@@ -85,26 +94,39 @@ public class DBQueries {
 		}
 	}
 	
-	// querty that will return full ticket info
+	// query that will return full ticket info
 	public List< Ticket > getFullTicketInfo(int ticketNumber) {
-		// TO DO: MODIFY THE QUERY TO INCLUDE VARIABLE
-		
 		List < Ticket > result = null;
 		ResultSet resultSet = null;
 		
 		try {
+			queryFullTicketInfoWithTicketNumber.setInt(1, ticketNumber);
 			resultSet = queryFullTicketInfoWithTicketNumber.executeQuery();
 			result = new ArrayList<Ticket>();
 			
 			while (resultSet.next()) {
-				// TO DO : GENERATE NEW TICKET THAT WILL HODL THE TICKET INFO
-				// AND THE WORK TIME INFO
+				// TO DO: DECIDE IF I NEED TO NULL EACH OBJ ON EVERY ITERATION
+				WorkTime workTime = new WorkTime.Builder(resultSet.getInt("TicketNumber"))
+						.dateWorked(resultSet.getDate("Date"))
+						.hoursWorked(resultSet.getDouble("Hours"))
+						.build();
+				
+				Ticket tick = new Ticket.Builder(resultSet.getInt("TicketNumber"), resultSet.getString("TicketName"))
+						.ticketComment(resultSet.getString("TicketComment"))
+						.workTime(workTime)
+						.build();
+				
+				result.add(tick);
 			
 			}
 			
+			
+
 		} catch (SQLException sqe) {
 			sqe.printStackTrace();
-		}
+		} 
+		
+		return result;
 	}
 	
 	// query specific ticket work time
@@ -123,6 +145,8 @@ public class DBQueries {
 						resultSet.getDate("Date"), 
 						resultSet.getDouble("Hours")));
 			}
+			
+			
 			
 		} catch (SQLException sqe) {
 			sqe.printStackTrace();
@@ -147,6 +171,8 @@ public class DBQueries {
 						resultSet.getDouble("Hours")));
 			}
 			
+			
+			
 		} catch (SQLException sqe) {
 			sqe.printStackTrace();
 		}
@@ -168,6 +194,9 @@ public class DBQueries {
 						resultSet.getString("TicketName"),
 						resultSet.getString("TicketComment"));
 			}
+			
+			
+			
 		} catch (SQLException sqe) {
 			sqe.printStackTrace();
 		}
@@ -187,7 +216,10 @@ public class DBQueries {
 				return new Ticket(resultSet.getInt("TicketNumber"),
 									resultSet.getString("TicketName"),
 									resultSet.getString("TicketComment"));
-			}		
+			}
+			
+			
+			
 		} catch (SQLException sqe) {
 			sqe.printStackTrace();
 		}
@@ -211,16 +243,12 @@ public class DBQueries {
 						resultSet.getString("TicketName"),
 						resultSet.getString("TicketComment")));
 			}
+			
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				resultSet.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			dbConnection.close();
-		}
+		} 
 		
 		return results;
 	}
@@ -238,6 +266,7 @@ public class DBQueries {
 			// insert the new entry & return # of rows updated
 			result = createNewTicket.executeUpdate();
 			
+			dbConnection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -258,6 +287,9 @@ public class DBQueries {
 			
 			// insert the new row and return the # of rows updated
 			result = createNewWorkTime.executeUpdate();
+			
+			dbConnection.close();
+			
 		} catch (SQLException sqe) {
 			sqe.printStackTrace();
 		}

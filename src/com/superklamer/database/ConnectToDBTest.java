@@ -30,20 +30,37 @@ public class ConnectToDBTest {
 			System.out.println();
 			
 			DBQueries dbQuery1 = new DBQueries();
-			//dbQuery1.addTicket(1234567890, "Test Ticket 1", "Comment for test ticket 1");
+			List<Ticket> tickets = dbQuery1.getFullTicketInfo(1234567890);
+			
+			for (Ticket ticket : tickets) {
+				System.out.print(ticket.getTicketNumber() + "\t" +
+						ticket.getTicketName() + "\t" +
+						ticket.getTicketComment() + "\t" + 
+						ticket.getWorkTime().getDateWorkedAsString() + "\t" +
+						ticket.getWorkTime().getHoursWorked() + "\n"
+						);
+			}
+			
+			
+//			dbQuery1.addTicket(1234567890, "Test Ticket 1", "Comment for test ticket 1");
 //			List<Ticket> tickets = dbQuery1.getAllTicketsInfo();
-//			
+			
+//			Ticket tick = new Ticket.Builder(00000000, "Pasta")
+//					.ticketComment("mama mia")
+//					.workTime(workTime)
+//					.build();
+			
 //			for (Ticket ticket : tickets) {
 //				System.out.print( ticket.getTicketNumber() + "\t" + ticket.getTicketName() + "\t" + ticket.getTicketComment());
 //			}
 			
 //			int i = dbQuery1.addTime(1234567890, new Date(), 4.0);
 			
-			List<WorkTime> workTime = dbQuery1.getTicketWorkTime(1234567890);
-			for (WorkTime wt : workTime) {
-				System.out.print(wt.getTicketNumber() + "\t" + wt.getDateWorked() + "\t" + wt.getHoursWorked() );
-			System.out.println();
-			}
+//			List<WorkTime> workTime = dbQuery1.getTicketWorkTime(1234567890);
+//			for (WorkTime wt : workTime) {
+//				System.out.print(wt.getTicketNumber() + "\t" + wt.getDateWorked() + "\t" + wt.getHoursWorked() );
+//			System.out.println();
+//			}
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
