@@ -35,7 +35,7 @@ public class DBQueries {
 			String ticketInfoWithTicketNumber = "SELECT * FROM Tickets.TicketData WHERE TicketNumber = ?";
 			String fullTicketInfoWithTicketNumber = "SELECT TicketData.TicketNumber, TicketData.TicketName, TicketData.TicketComment, TicketHours.Date, TicketHours.Hours " +
 					"FROM Tickets.TicketData " + 
-					"INNER JOIN "+ 
+					"INNER JOIN " + 
 					"TicketHours " + 
 					"ON " + 
 					"TicketData.TicketNumber = TicketHours.TicketNumber " +
@@ -119,9 +119,6 @@ public class DBQueries {
 				result.add(tick);
 			
 			}
-			
-			
-
 		} catch (SQLException sqe) {
 			sqe.printStackTrace();
 		} 
@@ -266,7 +263,7 @@ public class DBQueries {
 			// insert the new entry & return # of rows updated
 			result = createNewTicket.executeUpdate();
 			
-			dbConnection.close();
+			//dbConnection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -288,7 +285,7 @@ public class DBQueries {
 			// insert the new row and return the # of rows updated
 			result = createNewWorkTime.executeUpdate();
 			
-			dbConnection.close();
+			//dbConnection.close();
 			
 		} catch (SQLException sqe) {
 			sqe.printStackTrace();

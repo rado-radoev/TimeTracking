@@ -55,7 +55,7 @@ public class ConnectToDBTest {
 //			}
 			
 //			int i = dbQuery1.addTime(1234567890, new Date(), 4.0);
-			
+//			
 //			List<WorkTime> workTime = dbQuery1.getTicketWorkTime(1234567890);
 //			for (WorkTime wt : workTime) {
 //				System.out.print(wt.getTicketNumber() + "\t" + wt.getDateWorked() + "\t" + wt.getHoursWorked() );
