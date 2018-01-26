@@ -21,6 +21,7 @@ public class DBQueries {
 	private PreparedStatement queryAllTicketsWorkTime;
 	private PreparedStatement createNewTicket;
 	private PreparedStatement createNewWorkTime;
+	private PreparedStatement qquery1;
 	ConnectToDB dbConnection;
 	
 	
@@ -44,6 +45,8 @@ public class DBQueries {
 			String allTicketsWorkTime = "SELECT * FROM Tickets.TicketHours";
 			String ticketWorkTime = "SELECT * FROM Tickets.TicketHours WHERE TicketNumber = ?"; 
 			
+			String query1 = "SELECT TicketData.TicketNumber, TicketData.TicketName, TicketData.TicketComment, TicketHours.Date, TicketHours.Hours FROM Tickets.TicketData INNER JOIN TicketHours ON TicketData.TicketNumber = TicketHours.TicketNumber WHERE TicketData.TicketNumber = 1234567890";
+			qquery1 = dbConnection.getConnection().prepareStatement(query1);
 			
 			
 			// create a query that will return information for all tickets;
@@ -92,6 +95,35 @@ public class DBQueries {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public List<Ticket> query1 () {
+		List < Ticket > result = null;
+		ResultSet resultSet = null;
+		
+		try {
+			resultSet = qquery1.executeQuery();
+			result = new ArrayList<Ticket>();
+			
+			while (resultSet.next()) {
+				WorkTime workTime = new WorkTime.Builder(resultSet.getInt("TicketNumber"))
+						.dateWorked(resultSet.getDate("Date"))
+						.hoursWorked(resultSet.getDouble("Hours"))
+						.build();
+				
+				Ticket tick = new Ticket.Builder(resultSet.getInt("TicketNumber"), resultSet.getString("TicketName"))
+						.ticketComment(resultSet.getString("TicketComment"))
+						.workTime(workTime)
+						.build();
+				
+				result.add(tick);
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return result;
 	}
 	
 	// query that will return full ticket info

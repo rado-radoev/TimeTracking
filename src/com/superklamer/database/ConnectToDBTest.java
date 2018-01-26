@@ -30,7 +30,7 @@ public class ConnectToDBTest {
 			System.out.println();
 			
 			DBQueries dbQuery1 = new DBQueries();
-			List<Ticket> tickets = dbQuery1.getFullTicketInfo(1234567890);
+			List<Ticket> tickets = dbQuery1.query1();
 			
 			for (Ticket ticket : tickets) {
 				System.out.print(ticket.getTicketNumber() + "\t" +
